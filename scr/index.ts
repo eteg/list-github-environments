@@ -5,7 +5,7 @@ import github from '@actions/github';
   const excludeEnvs = core.getInput('exclude-envs', { required: false }) || [];
   const hasProtectionRule =
     core.getInput('has-protection-rule', { required: false }) || true;
-  const repotoken = core.getInput('repoToken', { required: false }) || true;
+  const repotoken = core.getInput('repo-token', { required: false }) || true;
 
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${repotoken}`);
