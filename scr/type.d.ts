@@ -38,7 +38,7 @@ interface Reviewer2 {
   reviewer: Reviewer;
 }
 
-interface Protectionrule {
+interface ProtectionRule {
   id: number;
   node_id: string;
   type: string;
@@ -54,7 +54,7 @@ interface Environment {
   html_url: string;
   created_at: string;
   updated_at: string;
-  protection_rules: Protectionrule[];
+  protection_rules: ProtectionRule[];
   deployment_branch_policy: Deploymentbranchpolicy;
 }
 

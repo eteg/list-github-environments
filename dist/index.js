@@ -13075,6 +13075,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 const axios_1 = __importDefault(__nccwpck_require__(8757));
+const protectionRuleFilter = (value, compare) => {
+    if (typeof compare === 'undefined')
+        return true;
+    return compare !== 'false' && !value.length;
+};
 (async () => {
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
     const excludeEnvs = (excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []);
@@ -13090,12 +13095,8 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
     const { repo: { repo, owner }, } = github_1.context;
     const fetchEnvs = await axiosConfig.get(`/repos/${owner}/${repo}/environments`);
     const envList = fetchEnvs.data?.environments
-        .filter(({ name, protection_rules }) => (!excludeEnvs.includes(name) &&
-        typeof hasProtectionRule !== 'undefined' &&
-        (hasProtectionRule === 'true'
-            ? protection_rules.length
-            : !protection_rules.length)) ||
-        true)
+        .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
+        protectionRuleFilter(protection_rules, hasProtectionRule))
         .map((it) => it.name);
     return (0, core_1.setOutput)('environments', envList);
 })();
