@@ -13078,7 +13078,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const protectionRuleFilter = (value, compare) => {
     if (typeof compare === 'undefined')
         return true;
-    return compare !== 'false' && !value.length;
+    return compare === 'true' && !!value.length;
 };
 (async () => {
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
