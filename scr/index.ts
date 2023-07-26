@@ -2,11 +2,16 @@ import { getInput, setOutput } from '@actions/core';
 import { context as contextGit } from '@actions/github';
 import axios from 'axios';
 
-const protectionRuleFilter = (
+const hasProtectionRuleFilter = (
   value: ProtectionRule[],
   hasProtection: string | undefined,
 ): boolean => {
   if (typeof hasProtection === 'undefined') return true;
+
+  console.log({
+    value,
+    hasProtection,
+  });
 
   if (hasProtection === 'true' && !!value.length) return true;
   return false;
@@ -42,10 +47,9 @@ const protectionRuleFilter = (
   );
 
   const envList = fetchEnvs.data?.environments
-    .filter(
-      ({ name, protection_rules }) =>
-        !excludeEnvs.includes(name) &&
-        protectionRuleFilter(protection_rules, hasProtectionRule),
+    .filter(({ protection_rules }) =>
+      // !excludeEnvs.includes(name) &&
+      hasProtectionRuleFilter(protection_rules, hasProtectionRule),
     )
     .map((it) => it.name);
 
