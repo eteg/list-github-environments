@@ -8,9 +8,8 @@ const protectionRuleFilter = (
 ): boolean => {
   if (typeof compare === 'undefined') return true;
 
-  console.log('protections', value.length);
-
-  return compare !== 'false' && !value.length;
+  if (compare === 'true') return !!value.length;
+  return false;
 };
 
 (async () => {
