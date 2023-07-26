@@ -10,7 +10,7 @@ import axios from 'axios';
   ) as string[];
 
   const hasProtectionRule =
-    getInput('has-protection-rule', { required: false }) || true;
+    getInput('has-protection-rule', { required: false }) !== 'false';
 
   const repotoken = getInput('repo-token', { required: true });
 
