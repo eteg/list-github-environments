@@ -13,8 +13,7 @@ const hasProtectionRuleFilter = (
     hasProtection,
   });
 
-  if (hasProtection === 'true' && value.length) return true;
-  return false;
+  return hasProtection === 'true' ? !!value.length : !value.length;
 };
 
 (async () => {

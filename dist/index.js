@@ -13082,9 +13082,7 @@ const hasProtectionRuleFilter = (value, hasProtection) => {
         value,
         hasProtection,
     });
-    if (hasProtection === 'true' && value.length)
-        return true;
-    return false;
+    return hasProtection === 'true' ? !!value.length : !value.length;
 };
 (async () => {
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
