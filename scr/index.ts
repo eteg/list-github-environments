@@ -8,11 +8,6 @@ const hasProtectionRuleFilter = (
 ): boolean => {
   if (typeof hasProtection === 'undefined') return true;
 
-  console.log({
-    value,
-    hasProtection,
-  });
-
   return hasProtection === 'true' ? !!value.length : !value.length;
 };
 
@@ -46,16 +41,10 @@ const hasProtectionRuleFilter = (
   );
 
   const envList = fetchEnvs.data?.environments
-    .filter(({ protection_rules }) =>
-      // !excludeEnvs.includes(name) &&
-      {
-        const retorno = hasProtectionRuleFilter(
-          protection_rules,
-          hasProtectionRule,
-        );
-        console.log({ retorno });
-        return retorno;
-      },
+    .filter(
+      ({ name, protection_rules }) =>
+        !excludeEnvs.includes(name) &&
+        hasProtectionRuleFilter(protection_rules, hasProtectionRule),
     )
     .map((it) => it.name);
 

@@ -13078,10 +13078,6 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const hasProtectionRuleFilter = (value, hasProtection) => {
     if (typeof hasProtection === 'undefined')
         return true;
-    console.log({
-        value,
-        hasProtection,
-    });
     return hasProtection === 'true' ? !!value.length : !value.length;
 };
 (async () => {
@@ -13099,11 +13095,8 @@ const hasProtectionRuleFilter = (value, hasProtection) => {
     const { repo: { repo, owner }, } = github_1.context;
     const fetchEnvs = await axiosConfig.get(`/repos/${owner}/${repo}/environments`);
     const envList = fetchEnvs.data?.environments
-        .filter(({ protection_rules }) => {
-        const retorno = hasProtectionRuleFilter(protection_rules, hasProtectionRule);
-        console.log({ retorno });
-        return retorno;
-    })
+        .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
+        hasProtectionRuleFilter(protection_rules, hasProtectionRule))
         .map((it) => it.name);
     return (0, core_1.setOutput)('environments', envList);
 })();
