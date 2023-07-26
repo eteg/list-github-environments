@@ -13075,11 +13075,11 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 const axios_1 = __importDefault(__nccwpck_require__(8757));
-const protectionRuleFilter = (value, compare) => {
-    if (typeof compare === 'undefined')
+const protectionRuleFilter = (value, hasProtection) => {
+    if (typeof hasProtection === 'undefined')
         return true;
-    if (compare === 'true')
-        return !!value.length;
+    if (hasProtection === 'true' && !!value.length)
+        return true;
     return false;
 };
 (async () => {

@@ -4,11 +4,11 @@ import axios from 'axios';
 
 const protectionRuleFilter = (
   value: ProtectionRule[],
-  compare: string | undefined,
+  hasProtection: string | undefined,
 ): boolean => {
-  if (typeof compare === 'undefined') return true;
+  if (typeof hasProtection === 'undefined') return true;
 
-  if (compare === 'true') return !!value.length;
+  if (hasProtection === 'true' && !!value.length) return true;
   return false;
 };
 
