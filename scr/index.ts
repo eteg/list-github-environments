@@ -3,10 +3,16 @@ import github from '@actions/github';
 import axios from 'axios';
 
 (async () => {
-  const excludeEnvs = getInput('exclude-envs', { required: false }) || [];
+  const excludeEnvsInput = getInput('exclude-envs', { required: false });
+
+  const excludeEnvs = (
+    excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []
+  ) as string[];
+
   const hasProtectionRule =
     getInput('has-protection-rule', { required: false }) || true;
-  const repotoken = getInput('repo-token', { required: false }) || true;
+
+  const repotoken = getInput('repo-token', { required: true });
 
   const axiosConfig = axios.create({
     baseURL: 'https://api.github.com',
