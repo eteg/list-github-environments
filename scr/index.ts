@@ -10,7 +10,7 @@ const protectionRuleFilter = (
 
   console.log('protections', value.length);
 
-  return compare === 'true' && !!value.length;
+  return compare !== 'false' && !value.length;
 };
 
 (async () => {

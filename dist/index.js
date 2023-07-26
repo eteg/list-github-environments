@@ -13079,7 +13079,7 @@ const protectionRuleFilter = (value, compare) => {
     if (typeof compare === 'undefined')
         return true;
     console.log('protections', value.length);
-    return compare === 'true' && !!value.length;
+    return compare !== 'false' && !value.length;
 };
 (async () => {
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
