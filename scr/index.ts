@@ -14,6 +14,8 @@ import axios from 'axios';
       required: false,
     }) || undefined;
 
+  console.log({ hasProtectionRule });
+
   const repoToken = getInput('repo-token', { required: true });
 
   const axiosConfig = axios.create({

@@ -13081,6 +13081,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
     const hasProtectionRule = (0, core_1.getInput)('has-protection-rule', {
         required: false,
     }) || undefined;
+    console.log({ hasProtectionRule });
     const repoToken = (0, core_1.getInput)('repo-token', { required: true });
     const axiosConfig = axios_1.default.create({
         baseURL: 'https://api.github.com',
