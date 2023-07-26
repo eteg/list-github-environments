@@ -13078,6 +13078,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
 const protectionRuleFilter = (value, compare) => {
     if (typeof compare === 'undefined')
         return true;
+    console.log('protections', value.length);
     return compare === 'true' && !!value.length;
 };
 (async () => {
