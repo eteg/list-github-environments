@@ -19,10 +19,12 @@ import axios from 'axios';
     headers: { Authorization: `Bearer ${repotoken}` },
   });
 
-  const { repo } = contextGit;
+  const {
+    repo: { repo, owner },
+  } = contextGit;
 
   const fetchEnvs = await axiosConfig.get<IEnvironmentApi>(
-    `/repos/${repo}/environments`,
+    `/repos/${owner}/${repo}/environments`,
   );
 
   const envList = fetchEnvs.data?.environments.filter(

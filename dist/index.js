@@ -13084,8 +13084,8 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
         baseURL: 'https://api.github.com',
         headers: { Authorization: `Bearer ${repotoken}` },
     });
-    const { repo } = github_1.context;
-    const fetchEnvs = await axiosConfig.get(`/repos/${repo}/environments`);
+    const { repo: { repo, owner }, } = github_1.context;
+    const fetchEnvs = await axiosConfig.get(`/repos/${owner}/${repo}/environments`);
     const envList = fetchEnvs.data?.environments.filter(({ name, protection_rules }) => !excludeEnvs.includes(name) && hasProtectionRule
         ? protection_rules.length
         : true);
