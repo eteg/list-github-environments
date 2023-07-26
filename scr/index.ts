@@ -13,7 +13,7 @@ const hasProtectionRuleFilter = (
     hasProtection,
   });
 
-  if (hasProtection === 'true' && !!value.length) return true;
+  if (hasProtection === 'true' && value.length) return true;
   return false;
 };
 
@@ -49,7 +49,14 @@ const hasProtectionRuleFilter = (
   const envList = fetchEnvs.data?.environments
     .filter(({ protection_rules }) =>
       // !excludeEnvs.includes(name) &&
-      hasProtectionRuleFilter(protection_rules, hasProtectionRule),
+      {
+        const retorno = hasProtectionRuleFilter(
+          protection_rules,
+          hasProtectionRule,
+        );
+        console.log({ retorno });
+        return retorno;
+      },
     )
     .map((it) => it.name);
 
