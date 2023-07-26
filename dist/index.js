@@ -13089,11 +13089,12 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
     const { repo: { repo, owner }, } = github_1.context;
     const fetchEnvs = await axiosConfig.get(`/repos/${owner}/${repo}/environments`);
     const envList = fetchEnvs.data?.environments
-        .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
+        .filter(({ name, protection_rules }) => (!excludeEnvs.includes(name) &&
         typeof hasProtectionRule !== 'undefined' &&
         (hasProtectionRule === 'true'
             ? protection_rules.length
-            : !protection_rules.length))
+            : !protection_rules.length)) ||
+        true)
         .map((it) => it.name);
     return (0, core_1.setOutput)('environments', envList);
 })();

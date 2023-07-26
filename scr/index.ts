@@ -32,11 +32,12 @@ import axios from 'axios';
   const envList = fetchEnvs.data?.environments
     .filter(
       ({ name, protection_rules }) =>
-        !excludeEnvs.includes(name) &&
-        typeof hasProtectionRule !== 'undefined' &&
-        (hasProtectionRule === 'true'
-          ? protection_rules.length
-          : !protection_rules.length),
+        (!excludeEnvs.includes(name) &&
+          typeof hasProtectionRule !== 'undefined' &&
+          (hasProtectionRule === 'true'
+            ? protection_rules.length
+            : !protection_rules.length)) ||
+        true,
     )
     .map((it) => it.name);
 
