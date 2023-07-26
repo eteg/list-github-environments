@@ -14,13 +14,11 @@ import axios from 'axios';
       required: false,
     }) || undefined;
 
-  console.log('hasProtectionRule', hasProtectionRule);
-
-  const repotoken = getInput('repo-token', { required: true });
+  const repoToken = getInput('repo-token', { required: true });
 
   const axiosConfig = axios.create({
     baseURL: 'https://api.github.com',
-    headers: { Authorization: `Bearer ${repotoken}` },
+    headers: { Authorization: `Bearer ${repoToken}` },
   });
 
   const {
@@ -32,10 +30,13 @@ import axios from 'axios';
   );
 
   const envList = fetchEnvs.data?.environments
-    .filter(({ name, protection_rules }) =>
-      !excludeEnvs.includes(name) && hasProtectionRule !== undefined
-        ? protection_rules.length
-        : !protection_rules.length,
+    .filter(
+      ({ name, protection_rules }) =>
+        !excludeEnvs.includes(name) &&
+        typeof hasProtectionRule !== 'undefined' &&
+        (hasProtectionRule === 'true'
+          ? protection_rules.length
+          : !protection_rules.length),
     )
     .map((it) => it.name);
 
