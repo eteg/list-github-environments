@@ -9799,9 +9799,9 @@ Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
 (async () => {
-    const excludeEnvs = core_1.default.getInput('exclude-envs', { required: false }) || [];
-    const hasProtectionRule = core_1.default.getInput('has-protection-rule', { required: false }) || true;
-    const repotoken = core_1.default.getInput('repo-token', { required: false }) || true;
+    const excludeEnvs = (0, core_1.getInput)('exclude-envs', { required: false }) || [];
+    const hasProtectionRule = (0, core_1.getInput)('has-protection-rule', { required: false }) || true;
+    const repotoken = (0, core_1.getInput)('repo-token', { required: false }) || true;
     const headers = new Headers();
     headers.append('Authorization', `Bearer ${repotoken}`);
     const { repo } = github_1.default.context;
@@ -9809,7 +9809,7 @@ const github_1 = __nccwpck_require__(5438);
     const envList = payload.environments.filter(({ name, protection_rules }) => !excludeEnvs.includes(name) && hasProtectionRule
         ? protection_rules.length
         : true);
-    core_1.default.setOutput('environments', envList);
+    return (0, core_1.setOutput)('environments', envList);
 })();
 
 })();

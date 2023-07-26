@@ -1,11 +1,11 @@
-import core from '@actions/core';
+import { getInput, setOutput } from '@actions/core';
 import github from '@actions/github';
 
 (async () => {
-  const excludeEnvs = core.getInput('exclude-envs', { required: false }) || [];
+  const excludeEnvs = getInput('exclude-envs', { required: false }) || [];
   const hasProtectionRule =
-    core.getInput('has-protection-rule', { required: false }) || true;
-  const repotoken = core.getInput('repo-token', { required: false }) || true;
+    getInput('has-protection-rule', { required: false }) || true;
+  const repotoken = getInput('repo-token', { required: false }) || true;
 
   const headers = new Headers();
   headers.append('Authorization', `Bearer ${repotoken}`);
@@ -23,5 +23,5 @@ import github from '@actions/github';
       : true,
   );
 
-  core.setOutput('environments', envList);
+  return setOutput('environments', envList);
 })();
