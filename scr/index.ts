@@ -27,12 +27,13 @@ import axios from 'axios';
     `/repos/${owner}/${repo}/environments`,
   );
 
-  const envList = fetchEnvs.data?.environments.filter(
-    ({ name, protection_rules }) =>
+  const envList = fetchEnvs.data?.environments
+    .filter(({ name, protection_rules }) =>
       !excludeEnvs.includes(name) && hasProtectionRule
         ? protection_rules.length
         : true,
-  );
+    )
+    .map((it) => it.name);
 
   return setOutput('environments', envList);
 })();
