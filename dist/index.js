@@ -13073,7 +13073,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
-const github_1 = __importDefault(__nccwpck_require__(5438));
+const github_1 = __nccwpck_require__(5438);
 const axios_1 = __importDefault(__nccwpck_require__(8757));
 (async () => {
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
@@ -13084,7 +13084,7 @@ const axios_1 = __importDefault(__nccwpck_require__(8757));
         baseURL: 'https://api.github.com',
         headers: { Authorization: `Bearer ${repotoken}` },
     });
-    const { repo } = github_1.default.context;
+    const { repo } = github_1.context;
     const fetchEnvs = await axiosConfig.get(`/repos/${repo}/environments`);
     const envList = fetchEnvs.data?.environments.filter(({ name, protection_rules }) => !excludeEnvs.includes(name) && hasProtectionRule
         ? protection_rules.length

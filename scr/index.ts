@@ -1,5 +1,5 @@
 import { getInput, setOutput } from '@actions/core';
-import github from '@actions/github';
+import { context as contextGit } from '@actions/github';
 import axios from 'axios';
 
 (async () => {
@@ -19,7 +19,7 @@ import axios from 'axios';
     headers: { Authorization: `Bearer ${repotoken}` },
   });
 
-  const { repo } = github.context;
+  const { repo } = contextGit;
 
   const fetchEnvs = await axiosConfig.get<IEnvironmentApi>(
     `/repos/${repo}/environments`,
