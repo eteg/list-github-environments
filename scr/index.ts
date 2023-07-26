@@ -9,8 +9,11 @@ import axios from 'axios';
     excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []
   ) as string[];
 
-  const hasProtectionRule =
-    getInput('has-protection-rule', { required: false }) !== 'false';
+  const hasProtectionRule = getInput('has-protection-rule', {
+    required: false,
+  });
+
+  console.log('hasProtectionRule', hasProtectionRule);
 
   const repotoken = getInput('repo-token', { required: true });
 
@@ -31,7 +34,7 @@ import axios from 'axios';
     .filter(({ name, protection_rules }) =>
       !excludeEnvs.includes(name) && hasProtectionRule
         ? protection_rules.length
-        : true,
+        : !protection_rules.length,
     )
     .map((it) => it.name);
 
