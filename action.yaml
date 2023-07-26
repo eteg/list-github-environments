@@ -1,5 +1,5 @@
-name: "Deploy App Zendesk"
-description: "Adds pull request file changes as a comment to a newly opened PR"
+name: "Environments from repo"
+description: "Get environments from repo"
 inputs:
   exclude-envs:
     description: "Environment to exclude"

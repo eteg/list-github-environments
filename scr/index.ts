@@ -12,7 +12,6 @@ import github from '@actions/github';
 
   const { repo } = github.context;
 
-  // eslint-disable-next-line no-undef
   const payload = (await fetch(
     `https://api.github.com/repos/${repo}/environments`,
     { method: 'GET', headers },
