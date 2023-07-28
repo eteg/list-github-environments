@@ -13464,7 +13464,7 @@ class Github {
     constructor({ apiToken }) {
         this.githubRequest = Github.createGithubConnection(apiToken);
     }
-    async listAllEnvironments({ owner, repo, per_page = 2, page = 1, }) {
+    async listAllEnvironments({ owner, repo, per_page = 100, page = 1, }) {
         let envs = [];
         const { data } = await this.githubRequest.get(`/repos/${owner}/${repo}/environments`, {
             params: {

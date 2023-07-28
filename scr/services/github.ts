@@ -17,7 +17,7 @@ export class Github {
   public async listAllEnvironments({
     owner,
     repo,
-    per_page = 2,
+    per_page = 100,
     page = 1,
   }: Pagination) {
     let envs: Environment[] = [];
