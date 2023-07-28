@@ -13449,7 +13449,7 @@ function wrappy (fn, cb) {
 
 /***/ }),
 
-/***/ 4581:
+/***/ 9935:
 /***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
 
 "use strict";
@@ -13458,55 +13458,44 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", ({ value: true }));
-__nccwpck_require__(4227);
-const core_1 = __nccwpck_require__(2186);
-const github_1 = __nccwpck_require__(5438);
-const api_1 = __importDefault(__nccwpck_require__(3542));
-const hasProtectionRuleFilter = (value, hasProtection) => {
-    if (typeof hasProtection === 'undefined')
-        return true;
-    return hasProtection === 'true' ? !!value.length : !value.length;
-};
-(async () => {
-    const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
-    const excludeEnvs = (excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []);
-    const hasProtectionRule = (0, core_1.getInput)('has-protection-rule', {
-        required: false,
-    }) || undefined;
-    const repoToken = (0, core_1.getInput)('repo-token', { required: true });
-    const { repo: { owner, repo }, } = github_1.context;
-    const fetchEnvs = await api_1.default.get(`/repos/${owner}/${repo}/environments`, {
-        headers: {
-            Authorization: `Bearer ${repoToken}`,
-        },
-    });
-    const envList = fetchEnvs.environments
-        .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
-        hasProtectionRuleFilter(protection_rules, hasProtectionRule))
-        .map((it) => it.name);
-    return (0, core_1.setOutput)('environments', envList);
-})();
-
-
-/***/ }),
-
-/***/ 3542:
-/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
-
-"use strict";
-
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
-Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports.Github = void 0;
 const axios_1 = __importDefault(__nccwpck_require__(8757));
-const axiosConfig = axios_1.default.create({
-    baseURL: 'https://api.github.com',
-});
-axiosConfig.interceptors.response.use((config) => config.data, ({ response }) => {
-    throw new Error(JSON.stringify(response?.data, null, 2));
-});
-exports["default"] = axiosConfig;
+class Github {
+    constructor({ apiToken }) {
+        this.githubRequest = Github.createGithubConnection(apiToken);
+    }
+    async listAllEnvironments({ owner, repo, per_page = 2, page = 1, }) {
+        let envs = [];
+        const { data } = await this.githubRequest.get(`/repos/${owner}/${repo}/environments`, {
+            params: {
+                per_page,
+                page,
+            },
+        });
+        envs = data.environments;
+        if (Math.ceil(data.total_count / per_page) >= page + 1) {
+            envs = [
+                ...envs,
+                ...(await this.listAllEnvironments({
+                    owner,
+                    repo,
+                    per_page,
+                    page: page + 1,
+                })),
+            ];
+        }
+        return envs;
+    }
+    static createGithubConnection(apiToken) {
+        return axios_1.default.create({
+            baseURL: 'https://api.github.com',
+            headers: {
+                Authorization: `Bearer ${apiToken}`,
+            },
+        });
+    }
+}
+exports.Github = Github;
 
 
 /***/ }),
@@ -17954,12 +17943,41 @@ module.exports = JSON.parse('[[[0,44],"disallowed_STD3_valid"],[[45,46],"valid"]
 /******/ 	if (typeof __nccwpck_require__ !== 'undefined') __nccwpck_require__.ab = __dirname + "/";
 /******/ 	
 /************************************************************************/
-/******/ 	
-/******/ 	// startup
-/******/ 	// Load entry module and return exports
-/******/ 	// This entry module is referenced by other modules so it can't be inlined
-/******/ 	var __webpack_exports__ = __nccwpck_require__(4581);
-/******/ 	module.exports = __webpack_exports__;
-/******/ 	
+var __webpack_exports__ = {};
+// This entry need to be wrapped in an IIFE because it need to be in strict mode.
+(() => {
+"use strict";
+var exports = __webpack_exports__;
+
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+__nccwpck_require__(4227);
+const core_1 = __nccwpck_require__(2186);
+const github_1 = __nccwpck_require__(5438);
+const github_2 = __nccwpck_require__(9935);
+const hasProtectionRuleFilter = (value, hasProtection) => {
+    if (typeof hasProtection === 'undefined')
+        return true;
+    return hasProtection === 'true' ? !!value.length : !value.length;
+};
+(async () => {
+    const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
+    const excludeEnvs = (excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []);
+    const hasProtectionRule = (0, core_1.getInput)('has-protection-rule', {
+        required: false,
+    }) || undefined;
+    const repoToken = (0, core_1.getInput)('repo-token', { required: true });
+    const { repo } = github_1.context;
+    const git = new github_2.Github({ apiToken: repoToken });
+    const fetchEnvs = await git.listAllEnvironments(repo);
+    const envList = fetchEnvs
+        .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
+        hasProtectionRuleFilter(protection_rules, hasProtectionRule))
+        .map((it) => it.name);
+    return (0, core_1.setOutput)('environments', envList);
+})();
+
+})();
+
+module.exports = __webpack_exports__;
 /******/ })()
 ;
