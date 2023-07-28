@@ -1,7 +1,7 @@
 import 'dotenv/config';
 import { getInput, setOutput } from '@actions/core';
-import { context as contextGit } from '@actions/github';
-import api from './providers/api';
+import { context } from '@actions/github';
+import { Github } from './services/github';
 
 const hasProtectionRuleFilter = (
   value: ProtectionRule[],
@@ -26,20 +26,13 @@ const hasProtectionRuleFilter = (
 
   const repoToken = getInput('repo-token', { required: true });
 
-  const {
-    repo: { owner, repo },
-  } = contextGit;
+  const { repo } = context;
 
-  const fetchEnvs = await api.get<unknown, IEnvironmentApi>(
-    `/repos/${owner}/${repo}/environments`,
-    {
-      headers: {
-        Authorization: `Bearer ${repoToken}`,
-      },
-    },
-  );
+  const git = new Github({ apiToken: repoToken });
 
-  const envList = fetchEnvs.environments
+  const fetchEnvs = await git.listAllEnvironments(repo);
+
+  const envList = fetchEnvs
     .filter(
       ({ name, protection_rules }) =>
         !excludeEnvs.includes(name) &&

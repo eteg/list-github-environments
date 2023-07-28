@@ -19,6 +19,8 @@ Para utilizar a action em seu workflow, adicione o seguinte trecho ao seu arquiv
     repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
 
+**Observação importante:** Não esquecer de adicionar a permission ***actions:read*** no job onde o step do **eteg/list-github-environments** atuará.
+
 ### Parâmetros
 
 Aqui estão os parâmetros disponíveis para personalizar a action:
