@@ -23,7 +23,7 @@
         "max-len": ["error", { "comments": 65 }],
         "camelcase": "off",
         "import/extensions": "off",
-        "import/no-unresolved": "off"
-        
+        "import/no-unresolved": "off",
+        "import/no-extraneous-dependencies": "off"
     }
 }
