@@ -14,7 +14,7 @@ Para utilizar a action em seu workflow, adicione o seguinte trecho ao seu arquiv
   id: github-environments
   uses: eteg/list-github-environments@v1
   with:
-    exclude-envs: ["staging", "develop"]
+    exclude-envs: '["staging", "develop"]'
     has-protection-rule: true
     repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
@@ -51,7 +51,7 @@ jobs:
         id: github-environments
         uses: eteg/list-github-environments@v1
         with:
-          exclude-envs: ["staging", "develop"]
+          exclude-envs: '["staging", "develop"]'
           has-protection-rule: true
           repo-token: "${{ secrets.GITHUB_TOKEN }}"
 
