@@ -1,6 +1,6 @@
 import { getInput, setOutput } from '@actions/core';
 import { context as contextGit } from '@actions/github';
-import axios from 'axios';
+import api from './providers/api';
 
 const hasProtectionRuleFilter = (
   value: ProtectionRule[],
@@ -25,20 +25,20 @@ const hasProtectionRuleFilter = (
 
   const repoToken = getInput('repo-token', { required: true });
 
-  const axiosConfig = axios.create({
-    baseURL: 'https://api.github.com',
-    headers: { Authorization: `Bearer ${repoToken}` },
-  });
-
   const {
-    repo: { repo, owner },
+    repo: { owner, repo },
   } = contextGit;
 
-  const fetchEnvs = await axiosConfig.get<IEnvironmentApi>(
+  const fetchEnvs = await api.get<unknown, IEnvironmentApi>(
     `/repos/${owner}/${repo}/environments`,
+    {
+      headers: {
+        Authorization: repoToken,
+      },
+    },
   );
 
-  const envList = fetchEnvs.data?.environments
+  const envList = fetchEnvs.environments
     .filter(
       ({ name, protection_rules }) =>
         !excludeEnvs.includes(name) &&

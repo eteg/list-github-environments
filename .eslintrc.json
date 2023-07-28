@@ -21,7 +21,9 @@
         "no-undef": "off",
         "no-unused-expressions": "warn",
         "max-len": ["error", { "comments": 65 }],
-        "camelcase": "off"
+        "camelcase": "off",
+        "import/extensions": "off",
+        "import/no-unresolved": "off"
         
     }
 }

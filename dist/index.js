@@ -13074,7 +13074,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", ({ value: true }));
 const core_1 = __nccwpck_require__(2186);
 const github_1 = __nccwpck_require__(5438);
-const axios_1 = __importDefault(__nccwpck_require__(8757));
+const api_1 = __importDefault(__nccwpck_require__(3542));
 const hasProtectionRuleFilter = (value, hasProtection) => {
     if (typeof hasProtection === 'undefined')
         return true;
@@ -13087,18 +13087,39 @@ const hasProtectionRuleFilter = (value, hasProtection) => {
         required: false,
     }) || undefined;
     const repoToken = (0, core_1.getInput)('repo-token', { required: true });
-    const axiosConfig = axios_1.default.create({
-        baseURL: 'https://api.github.com',
-        headers: { Authorization: `Bearer ${repoToken}` },
+    const { repo: { owner, repo }, } = github_1.context;
+    const fetchEnvs = await api_1.default.get(`/repos/${owner}/${repo}/environments`, {
+        headers: {
+            Authorization: repoToken,
+        },
     });
-    const { repo: { repo, owner }, } = github_1.context;
-    const fetchEnvs = await axiosConfig.get(`/repos/${owner}/${repo}/environments`);
-    const envList = fetchEnvs.data?.environments
+    const envList = fetchEnvs.environments
         .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
         hasProtectionRuleFilter(protection_rules, hasProtectionRule))
         .map((it) => it.name);
     return (0, core_1.setOutput)('environments', envList);
 })();
+
+
+/***/ }),
+
+/***/ 3542:
+/***/ (function(__unused_webpack_module, exports, __nccwpck_require__) {
+
+"use strict";
+
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
+Object.defineProperty(exports, "__esModule", ({ value: true }));
+const axios_1 = __importDefault(__nccwpck_require__(8757));
+const axiosConfig = axios_1.default.create({
+    baseURL: 'https://api.github.com',
+});
+axiosConfig.interceptors.response.use((config) => config.data, (config) => {
+    throw config.data;
+});
+exports["default"] = axiosConfig;
 
 
 /***/ }),
