@@ -33,7 +33,7 @@ interface Deploymentbranchpolicy {
   custom_branch_policies: boolean;
 }
 
-interface Reviewer2 {
+interface ReviewerObj {
   type: string;
   reviewer: Reviewer;
 }
@@ -43,7 +43,7 @@ interface ProtectionRule {
   node_id: string;
   type: string;
   wait_timer?: number;
-  reviewers?: Reviewer2[];
+  reviewers?: ReviewerObj[];
 }
 
 interface Environment {

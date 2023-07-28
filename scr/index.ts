@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { getInput, setOutput } from '@actions/core';
 import { context as contextGit } from '@actions/github';
 import api from './providers/api';
@@ -12,6 +13,7 @@ const hasProtectionRuleFilter = (
 };
 
 (async () => {
+  console.log(process.env);
   const excludeEnvsInput = getInput('exclude-envs', { required: false });
 
   const excludeEnvs = (
@@ -33,7 +35,7 @@ const hasProtectionRuleFilter = (
     `/repos/${owner}/${repo}/environments`,
     {
       headers: {
-        Authorization: repoToken,
+        Authorization: `Bearer ${repoToken}`,
       },
     },
   );
@@ -45,6 +47,8 @@ const hasProtectionRuleFilter = (
         hasProtectionRuleFilter(protection_rules, hasProtectionRule),
     )
     .map((it) => it.name);
+
+  console.log(envList);
 
   return setOutput('environments', envList);
 })();

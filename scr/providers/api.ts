@@ -6,8 +6,8 @@ const axiosConfig = axios.create({
 
 axiosConfig.interceptors.response.use(
   (config) => config.data,
-  (config) => {
-    throw config.data;
+  ({ response }) => {
+    throw new Error(JSON.stringify(response?.data, null, 2));
   },
 );
 
