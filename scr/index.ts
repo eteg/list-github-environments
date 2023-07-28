@@ -13,7 +13,6 @@ const hasProtectionRuleFilter = (
 };
 
 (async () => {
-  console.log(process.env);
   const excludeEnvsInput = getInput('exclude-envs', { required: false });
 
   const excludeEnvs = (
@@ -47,8 +46,6 @@ const hasProtectionRuleFilter = (
         hasProtectionRuleFilter(protection_rules, hasProtectionRule),
     )
     .map((it) => it.name);
-
-  console.log(envList);
 
   return setOutput('environments', envList);
 })();

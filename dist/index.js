@@ -13468,7 +13468,6 @@ const hasProtectionRuleFilter = (value, hasProtection) => {
     return hasProtection === 'true' ? !!value.length : !value.length;
 };
 (async () => {
-    console.log(process.env);
     const excludeEnvsInput = (0, core_1.getInput)('exclude-envs', { required: false });
     const excludeEnvs = (excludeEnvsInput ? JSON.stringify(excludeEnvsInput) : []);
     const hasProtectionRule = (0, core_1.getInput)('has-protection-rule', {
@@ -13485,7 +13484,6 @@ const hasProtectionRuleFilter = (value, hasProtection) => {
         .filter(({ name, protection_rules }) => !excludeEnvs.includes(name) &&
         hasProtectionRuleFilter(protection_rules, hasProtectionRule))
         .map((it) => it.name);
-    console.log(envList);
     return (0, core_1.setOutput)('environments', envList);
 })();
 
