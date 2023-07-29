@@ -49,11 +49,16 @@ export class Github {
   }
 
   private static createGithubConnection(apiToken: string) {
-    return axios.create({
+    const config = axios.create({
       baseURL: 'https://api.github.com',
       headers: {
         Authorization: `Bearer ${apiToken}`,
       },
     });
+    config.interceptors.response.use(null, ({ response }) => {
+      throw new Error(JSON.stringify(response?.data, null, 2));
+    });
+
+    return config;
   }
 }

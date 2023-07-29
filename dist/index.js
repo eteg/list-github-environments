@@ -13487,12 +13487,16 @@ class Github {
         return envs;
     }
     static createGithubConnection(apiToken) {
-        return axios_1.default.create({
+        const config = axios_1.default.create({
             baseURL: 'https://api.github.com',
             headers: {
                 Authorization: `Bearer ${apiToken}`,
             },
         });
+        config.interceptors.response.use(null, ({ response }) => {
+            throw new Error(JSON.stringify(response?.data, null, 2));
+        });
+        return config;
     }
 }
 exports.Github = Github;
