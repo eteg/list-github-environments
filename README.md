@@ -10,13 +10,17 @@ A action "List GitHub Environments" é uma action criada em JavaScript para busc
 Para utilizar a action em seu workflow, adicione o seguinte trecho ao seu arquivo de configuração YAML do GitHub Actions (por exemplo, `.github/workflows/main.yml`):
 
 ```yaml
-- name: List environments
-  id: github-environments
-  uses: eteg/list-github-environments@v1
-  with:
-    exclude-envs: '["staging", "develop"]'
-    has-protection-rule: true
-    repo-token: "${{ secrets.GITHUB_TOKEN }}"
+  permissions:
+    actions: read
+  ...
+  steps:
+    - name: List environments
+      id: github-environments
+      uses: eteg/list-github-environments@v1
+      with:
+        exclude-envs: '["staging", "develop"]'
+        has-protection-rule: true
+        repo-token: "${{ secrets.GITHUB_TOKEN }}"
 ```
 
 **Observação importante:** Não esquecer de adicionar a permission ***actions:read*** no job onde o step do **eteg/list-github-environments** atuará.
@@ -45,6 +49,8 @@ jobs:
   list-environments:
     name: List GitHub Environments
     runs-on: ubuntu-latest
+    permissions:
+      actions: read
     steps:
       - name: Checkout code
         uses: actions/checkout@v2
