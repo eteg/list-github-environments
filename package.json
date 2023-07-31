@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "main": "index.js",
   "scripts": {
-    "dev": "ts-node --transpile-only scr/index.ts",
-    "build": "ncc build scr/index.ts"
+    "dev": "ts-node --transpile-only src/index.ts",
+    "build": "ncc build src/index.ts"
   },
   "repository": {
     "type": "git",
